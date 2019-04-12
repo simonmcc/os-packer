@@ -19,13 +19,6 @@ if [ ! -e /usr/bin/az ] && [ ! -e /usr/sbin/az ]; then
     exit 1
 fi
 
-# this will block the script
-az login
-if [ $? != 0 ]; then
-    echo "Login and authorization failed..."
-    exit 1
-fi
-
 # create azure resource group
 az group create -n rancheros -l $AZURE_REGION
 if [ $? != 0 ]; then
@@ -40,11 +33,12 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
+AZURE_STORAGE_ACCOUNT_NAME=qus7uw2rancher
 # create azure storage account
 az storage account create \
     --resource-group rancheros \
     --location $AZURE_REGION \
-    --name rancheros \
+    --name ${AZURE_STORAGE_ACCOUNT_NAME} \
     --kind Storage \
     --sku Standard_LRS
 if [ $? != 0 ]; then
@@ -54,7 +48,7 @@ fi
 
 # create azure storage container
 az storage container create \
-    --account-name rancheros \
+    --account-name ${AZURE_STORAGE_ACCOUNT_NAME} \
     --name rancheros
 if [ $? != 0 ]; then
     echo "Create azure storage container failed..."
@@ -62,7 +56,7 @@ if [ $? != 0 ]; then
 fi
 
 # list azure storage account keys
-AZURE_STORAGE_ACCOUNT_KEYS=`az storage account keys list --resource-group rancheros --account-name rancheros`
+AZURE_STORAGE_ACCOUNT_KEYS=`az storage account keys list --resource-group rancheros --account-name ${AZURE_STORAGE_ACCOUNT_NAME}`
 if [ $? != 0 ]; then
     echo "List azure storage account keys failed..."
     exit 1
@@ -80,7 +74,7 @@ if [ -z "$AZURE_STORAGE_ACCOUNT_KEY" ]; then
 fi
 
 # upload rancheros.vhd
-az storage blob upload --account-name rancheros \
+az storage blob upload --account-name ${AZURE_STORAGE_ACCOUNT_NAME} \
     --account-key $AZURE_STORAGE_ACCOUNT_KEY \
     --container-name rancheros \
     --type page \
@@ -130,13 +124,3 @@ if [ $? != 0 ]; then
     echo "Create rancheros-verify vm failed..."
     exit 1
 fi
-
-# logout azure
-az logout
-if [ $? != 0 ]; then
-    echo "Logout azure failed..."
-    exit 1
-fi
-
-
-

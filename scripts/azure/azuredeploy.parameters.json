@@ -12,10 +12,10 @@
       "value": "rancheros"
     },
     "osDiskVhdUri": {
-      "value": "https://rancheros.blob.core.windows.net/rancheros/rancheros.vhd"
+      "value": "https://qus7uw2rancher.blob.core.windows.net/rancheros/rancheros.vhd"
     },
     "dataDisk0VhdUri": {
-      "value": "https://rancheros.blob.core.windows.net/rancheros/rancheros.vhd"
+      "value": "https://qus7uw2rancher.blob.core.windows.net/rancheros/rancheros.vhd"
     },
     "vmName": {
       "value": "rancheros-vhd-vm"

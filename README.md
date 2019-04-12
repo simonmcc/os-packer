@@ -16,6 +16,14 @@ Once that's tested you can go on to publish the full set of AMI's and the GCE im
 using `RANCHEROS_VERSION=vX.Y.Z make release`. (and for now, you need to upload the gce image using
 `gsutil cp ./rancheros-${RANCHEROS_VERSION}.tar.gz gs://ros-images/`.
 
+## Publishing a private image in Azure
+
+
+    PACKER_BOOT_WAIT=100s RANCHEROS_VERSION=v1.5.1 make build-azure)
+    AZURE_ROS_SSH_PUBLIC_KEY="$(cat ~/.ssh/my-key.pub)"
+    AZURE_REGION=westus2
+    export AZURE_REGION AZURE_ROS_SSH_PUBLIC_KEY
+    ./scripts/azure/pre-release-azure-img
 
 ## License
 
